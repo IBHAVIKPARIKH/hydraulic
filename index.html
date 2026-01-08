@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Trelleborg Hydraulic Cylinder Calculator (Offline)</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="page">
+    <header class="site-header">
+      <div class="brand">
+        <span class="logo-mark">T</span>
+        <div>
+          <div class="brand-title">Trelleborg</div>
+          <div class="brand-subtitle">Sealing Solutions</div>
+        </div>
+      </div>
+      <nav class="site-nav">
+        <a href="#calculator">Calculator</a>
+        <a href="#how-it-works">How it works</a>
+        <a href="#notes">Notes</a>
+      </nav>
+      <div class="lang-toggle">
+        <label for="language">Language</label>
+        <select id="language" disabled>
+          <option selected>English</option>
+        </select>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Hydraulic Cylinder</p>
+          <h1>Design &amp; Performance Calculator</h1>
+          <p class="lead">
+            Recreate the Trelleborg hydraulic cylinder calculator experience offline. Use the inputs to
+            estimate forces, areas, oil volumes, and cycle times for your cylinder configuration.
+          </p>
+          <div class="hero-stats">
+            <div>
+              <span class="stat-value" id="stat-extend-force">0</span>
+              <span class="stat-label">Extend force</span>
+            </div>
+            <div>
+              <span class="stat-value" id="stat-retract-force">0</span>
+              <span class="stat-label">Retract force</span>
+            </div>
+            <div>
+              <span class="stat-value" id="stat-cycle-time">0</span>
+              <span class="stat-label">Full cycle time</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-card" id="calculator">
+          <div class="card-header">
+            <h2>Hydraulic Cylinder Calculator</h2>
+            <p>Enter cylinder dimensions and operating data.</p>
+          </div>
+          <form id="calc-form" class="calc-grid">
+            <div class="field">
+              <label for="unit-system">Unit system</label>
+              <select id="unit-system">
+                <option value="metric" selected>Metric (mm, bar, L/min)</option>
+                <option value="imperial">Imperial (in, psi, gpm)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="bore">Bore diameter</label>
+              <div class="input-with-unit">
+                <input id="bore" type="number" step="0.1" min="0" value="80" required />
+                <span class="unit" data-unit="length">mm</span>
+              </div>
+            </div>
+            <div class="field">
+              <label for="rod">Rod diameter</label>
+              <div class="input-with-unit">
+                <input id="rod" type="number" step="0.1" min="0" value="40" required />
+                <span class="unit" data-unit="length">mm</span>
+              </div>
+            </div>
+            <div class="field">
+              <label for="stroke">Stroke length</label>
+              <div class="input-with-unit">
+                <input id="stroke" type="number" step="0.1" min="0" value="500" required />
+                <span class="unit" data-unit="length">mm</span>
+              </div>
+            </div>
+            <div class="field">
+              <label for="pressure">Operating pressure</label>
+              <div class="input-with-unit">
+                <input id="pressure" type="number" step="0.1" min="0" value="160" required />
+                <span class="unit" data-unit="pressure">bar</span>
+              </div>
+            </div>
+            <div class="field">
+              <label for="flow">Pump flow</label>
+              <div class="input-with-unit">
+                <input id="flow" type="number" step="0.1" min="0" value="35" required />
+                <span class="unit" data-unit="flow">L/min</span>
+              </div>
+            </div>
+            <div class="field">
+              <label for="efficiency">Mechanical efficiency</label>
+              <div class="input-with-unit">
+                <input id="efficiency" type="number" step="0.01" min="0.5" max="1" value="0.9" required />
+                <span class="unit">ratio</span>
+              </div>
+            </div>
+          </form>
+          <div class="results">
+            <h3>Results</h3>
+            <div class="results-grid">
+              <div class="result">
+                <span class="result-label">Piston area</span>
+                <span class="result-value" id="piston-area">0</span>
+              </div>
+              <div class="result">
+                <span class="result-label">Annulus area</span>
+                <span class="result-value" id="annulus-area">0</span>
+              </div>
+              <div class="result">
+                <span class="result-label">Extend force</span>
+                <span class="result-value" id="extend-force">0</span>
+              </div>
+              <div class="result">
+                <span class="result-label">Retract force</span>
+                <span class="result-value" id="retract-force">0</span>
+              </div>
+              <div class="result">
+                <span class="result-label">Extend volume</span>
+                <span class="result-value" id="extend-volume">0</span>
+              </div>
+              <div class="result">
+                <span class="result-label">Retract volume</span>
+                <span class="result-value" id="retract-volume">0</span>
+              </div>
+              <div class="result">
+                <span class="result-label">Extend speed</span>
+                <span class="result-value" id="extend-speed">0</span>
+              </div>
+              <div class="result">
+                <span class="result-label">Retract speed</span>
+                <span class="result-value" id="retract-speed">0</span>
+              </div>
+              <div class="result">
+                <span class="result-label">Full cycle time</span>
+                <span class="result-value" id="cycle-time">0</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="info" id="how-it-works">
+        <h2>How it works</h2>
+        <p>
+          The calculator estimates cylinder performance using bore, rod, stroke, pressure, and flow.
+          Extend force is pressure multiplied by piston area. Retract force uses the annulus area
+          (piston minus rod area). Volume and speed are derived from the same geometry and the
+          available flow rate.
+        </p>
+      </section>
+
+      <section class="notes" id="notes">
+        <h2>Notes for offline use</h2>
+        <ul>
+          <li>All calculations are performed locally in the browser.</li>
+          <li>Use the unit selector to switch between metric and imperial values.</li>
+          <li>The results update instantly as you modify the inputs.</li>
+        </ul>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>Recreated for offline use. Not affiliated with Trelleborg.</p>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
